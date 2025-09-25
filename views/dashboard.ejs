@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+  }
+
+  h2 {
+    margin-top: 30px;
+    color: #444;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+  }
+
+  form {
+    margin: 15px 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  form input, form select {
+    flex: 1;
+    min-width: 150px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  form button {
+    padding: 10px 15px;
+    background: #4CAF50;
+    border: none;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  form button:hover {
+    background: #45a049;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul li {
+    background: #fafafa;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  ul li button {
+    margin-left: 8px;
+    padding: 6px 10px;
+    font-size: 13px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  ul li button:nth-child(1) {
+    background: #007BFF;
+    color: white;
+  }
+  ul li button:nth-child(1):hover {
+    background: #0069d9;
+  }
+
+  ul li button:nth-child(2) {
+    background: #dc3545;
+    color: white;
+  }
+  ul li button:nth-child(2):hover {
+    background: #c82333;
+  }
+
+  #patient-section, #doctor-section {
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Dashboard</h1>
+
+    <!-- Patient Section -->
+    <div id="patient-section" style="display:none;">
+      <h2>Book Appointment</h2>
+      <form id="book-appointment-form">
+        <input type="text" name="doctor" placeholder="Doctor ID" required>
+        <input type="date" name="date" required>
+        <input type="text" name="reason" placeholder="Reason" required>
+        <button type="submit">Book</button>
+      </form>
+      <h2>Your Appointments</h2>
+      <ul id="appointments-list"></ul>
+    </div>
+
+    <!-- Doctor Section -->
+    <div id="doctor-section" style="display:none;">
+      <h2>Manage Patient Records</h2>
+      <form id="add-record-form">
+        <input type="text" name="patient" placeholder="Patient ID" required>
+        <input type="text" name="diagnosis" placeholder="Diagnosis" required>
+        <input type="text" name="prescription" placeholder="Prescription" required>
+        <button type="submit">Add Record</button>
+      </form>
+      <h2>Your Patients' Records</h2>
+      <ul id="records-list"></ul>
+
+      <h2>Appointments</h2>
+      <ul id="appointments-list-doctor"></ul>
+    </div>
+  </div>
+
+<script>
+const token = localStorage.getItem('token');
+const userRole = localStorage.getItem('role');
+const userId = localStorage.getItem('userId');
+
+if(!token || !userRole || !userId){
+  alert("Unauthorized! Please login again.");
+  window.location.href="/";
+}
+
+// Patient Dashboard
+if(userRole==='patient'){
+  document.getElementById('patient-section').style.display='block';
+  fetch(`/appointments/patient/${userId}`,{headers:{'Authorization':`Bearer ${token}`}})
+  .then(res=>res.json()).then(data=>{
+    const list=document.getElementById('appointments-list');
+    list.innerHTML='';
+    data.forEach(app=>{
+      list.innerHTML+=`<li>${new Date(app.date).toLocaleString()} with Dr. ${app.doctor.name} - ${app.status}</li>`;
+    });
+  });
+
+  document.getElementById('book-appointment-form').onsubmit=function(e){
+    e.preventDefault();
+    const doctor=this.doctor.value;
+    const date=this.date.value;
+    const reason=this.reason.value;
+    fetch('/appointments',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({patient:userId,doctor,date,reason})})
+    .then(()=> location.reload());
+  };
+}
+
+// Doctor Dashboard
+if(userRole==='doctor'){
+  document.getElementById('doctor-section').style.display='block';
+
+  // Patient Records
+  fetch(`/records/doctor/${userId}`,{headers:{'Authorization':`Bearer ${token}`}})
+  .then(res=>res.json()).then(data=>{
+    const list=document.getElementById('records-list');
+    list.innerHTML='';
+    data.forEach(rec=>{
+      list.innerHTML+=`<li>
+      <span>Patient: ${rec.patient.name}, Diagnosis: ${rec.diagnosis}, Prescription: ${rec.prescription}</span>
+      <span>
+        <button onclick="editRecord('${rec._id}')">Edit</button>
+        <button onclick="deleteRecord('${rec._id}')">Delete</button>
+      </span>
+      </li>`;
+    });
+  });
+
+  document.getElementById('add-record-form').onsubmit=function(e){
+    e.preventDefault();
+    const patient=this.patient.value;
+    const diagnosis=this.diagnosis.value;
+    const prescription=this.prescription.value;
+    fetch('/records',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({patient,doctor:userId,diagnosis,prescription})})
+    .then(()=> location.reload());
+  };
+
+  window.editRecord=function(id){
+    const newDiagnosis=prompt("Enter new diagnosis:");
+    const newPrescription=prompt("Enter new prescription:");
+    if(!newDiagnosis || !newPrescription) return;
+    fetch(`/records/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`},body:JSON.stringify({diagnosis:newDiagnosis,prescription:newPrescription})})
+    .then(()=> location.reload());
+  };
+
+  window.deleteRecord=function(id){
+    if(!confirm("Are you sure?")) return;
+    fetch(`/records/${id}`,{method:'DELETE',headers:{'Authorization':`Bearer ${token}`}})
+    .then(()=> location.reload());
+  };
+
+  // Appointments
+  fetch(`/appointments/doctor/${userId}`,{headers:{'Authorization':`Bearer ${token}`}})
+  .then(res=>res.json()).then(data=>{
+    const list=document.getElementById('appointments-list-doctor');
+    list.innerHTML='';
+    data.forEach(app=>{
+      list.innerHTML+=`<li>
+        <span>${new Date(app.date).toLocaleString()} - Patient: ${app.patient.name} - Status: ${app.status}</span>
+        <span>
+          <button onclick="confirmAppointment('${app._id}')">Confirm</button>
+          <button onclick="cancelAppointment('${app._id}')">Cancel</button>
+        </span>
+      </li>`;
+    });
+  });
+
+  window.confirmAppointment=function(id){
+    fetch(`/appointments/${id}/confirm`,{method:'PATCH',headers:{'Authorization':`Bearer ${token}`}})
+    .then(()=> location.reload());
+  };
+  window.cancelAppointment=function(id){
+    fetch(`/appointments/${id}/cancel`,{method:'PATCH',headers:{'Authorization':`Bearer ${token}`}})
+    .then(()=> location.reload());
+  };
+}
+</script>
+</body>
+</html>
