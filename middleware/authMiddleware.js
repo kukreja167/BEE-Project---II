@@ -3,13 +3,13 @@ const JWT_SECRET = "mysecret123";
 
 exports.protect = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(401).json({ error: "No token, unauthorized" });
+  if (!token) return res.status.json({ error: "No token, unauthorized" });
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
     next();
   } catch (err) {
-    res.status(401).json({ error: "Invalid token" });
+    res.status.json({ error: "Invalid token" });
   }
 };
