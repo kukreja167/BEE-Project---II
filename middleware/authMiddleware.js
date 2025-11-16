@@ -1,15 +1,18 @@
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "mysecret123";
+const User = require("../models/User.js");
 
-exports.protect = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status.json({ error: "No token, unauthorized" });
+exports.protect = async (req, res, next) => {
+  const auth = req.headers.authorization;
+  if (!auth) return res.redirect("/auth/login");
+
+  const token = auth.split(" ")[1];
+  if (!token) return res.redirect("/auth/login");
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded;
+    const decoded = jwt.verify(token, "secretkey");
+    req.user = await User.findById(decoded.id).lean();
     next();
-  } catch (err) {
-    res.status.json({ error: "Invalid token" });
+  } catch {
+    return res.redirect("/auth/login");
   }
 };
