@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | HealthConnect</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <h2>Login</h2>
+  <form action="/auth/login" method="POST">
+    <label>Email</label>
+    <input type="email" name="email" required />
+
+    <label>Password</label>
+    <input type="password" name="password" required />
+
+    <button type="submit">Login</button>
+    <p>New here? <a href="/auth/register">Create account</a></p>
+  </form>
+</body>
+</html>

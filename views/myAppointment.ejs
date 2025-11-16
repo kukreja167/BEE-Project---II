@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Appointments</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <h2>My Appointments</h2>
+
+  <% if (!appointments || appointments.length === 0) { %>
+    <p>You have not booked any appointments yet.</p>
+  <% } else { %>
+    <table border="1" cellpadding="8" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Doctor</th>
+          <th>Date</th>
+          <th>Time Slot</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% appointments.forEach(a => { %>
+          <tr>
+            <td><%= a.doctorId ? a.doctorId.name : 'N/A' %></td>
+            <td><%= a.date ? a.date.toDateString() : '' %></td>
+            <td><%= a.timeSlot %></td>
+            <td><%= a.status %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</body>
+</html>
