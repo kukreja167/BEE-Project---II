@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { protect } = require("../middleware/authMiddleware");
-const recordController = require("../controllers/recordController");
+const recordController = require("../controller/recordController");
 
 router.post("/", protect, recordController.createRecord);
 router.get("/patient/:id", protect, recordController.getPatientRecords);
