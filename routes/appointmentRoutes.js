@@ -1,12 +1,22 @@
-const express = require("express");
+// routes/appointmentRoutes.js
+const express = require('express');
 const router = express.Router();
+<<<<<<< HEAD
 const { protect } = require("../middleware/authMiddleware");
 const appointmentController = require("../controller/appointmentController");
+=======
+const appointmentController = require('../controller/appointmentController');
+const { protect } = require('../middleware/authMiddleware');
+>>>>>>> master
 
-router.post("/", protect, appointmentController.bookAppointment);
-router.get("/patient/:id", protect, appointmentController.getPatientAppointments);
-router.get("/doctor/:id", protect, appointmentController.getDoctorAppointments);
-router.patch("/:id/confirm", protect, appointmentController.confirmAppointment);
-router.patch("/:id/cancel", protect, appointmentController.cancelAppointment);
+// All routes require login
+router.get('/available', protect, appointmentController.showAvailableDoctors);
+router.get('/book/:doctorId', protect, appointmentController.bookDoctorPage);
+router.post('/book', protect, appointmentController.bookAppointment);
+router.get('/my', protect, appointmentController.myAppointments);
+
+// Optional doctor views
+router.get('/doctor', protect, appointmentController.doctorAppointments);
+router.post('/status/:id', protect, appointmentController.updateStatus);
 
 module.exports = router;
