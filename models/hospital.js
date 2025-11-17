@@ -1,4 +1,6 @@
-const mongoose = require("mongoose");
+
+const mongoose = require('mongoose');
+
 
 const doctorSubSchema = new mongoose.Schema(
   {
@@ -6,6 +8,7 @@ const doctorSubSchema = new mongoose.Schema(
     specialization: String,
     available: { type: Boolean, default: true },
     timeSlots: [String],
+
   },
   { _id: false }
 );
@@ -13,11 +16,18 @@ const doctorSubSchema = new mongoose.Schema(
 const hospitalSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
+
+    location: { type: String, required: true },
+    contact: { type: String },
+
     location: String,
     contact: String,
+
     doctors: [doctorSubSchema],
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Hospital", hospitalSchema);
+
+module.exports = mongoose.model('Hospital', hospitalSchema);
+

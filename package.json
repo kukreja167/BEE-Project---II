@@ -21,12 +21,11 @@
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-<<<<<<< HEAD
+
     "mongoose": "^8.18.2",
-    "pdfkit": "^0.17.2"
-=======
-    "mongoose": "^8.19.3",
+
+    "pdfkit": "^0.17.2",
+    "redis": "^5.9.0",
     "ws": "^8.18.3"
->>>>>>> d1324ca6ecaa93a5fcda205fe291c83889ee1faa
   }
 }

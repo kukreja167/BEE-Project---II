@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nearby Hospitals</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <h1>Nearby Hospitals & Available Doctors</h1>
+
+  <% if (!hospitals || hospitals.length === 0) { %>
+    <p>No hospitals found.</p>
+  <% } else { %>
+    <% hospitals.forEach(h => { %>
+      <div class="hospital-card">
+        <h2><%= h.name %></h2>
+        <p><strong>Location:</strong> <%= h.location %></p>
+        <p><strong>Contact:</strong> <%= h.contact || 'N/A' %></p>
+
+        <h3>Doctors:</h3>
+        <% if (!h.doctors || h.doctors.length === 0) { %>
+          <p>No doctors added yet.</p>
+        <% } else { %>
+          <ul>
+            <% h.doctors.forEach(d => { %>
+              <li>
+                <strong><%= d.name %></strong> - <%= d.specialization || 'General' %>
+                <% if (d.available) { %>
+                  <span style="color: green;">(Available)</span>
+                <% } else { %>
+                  <span style="color: red;">(Not Available)</span>
+                <% } %>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </div>
+    <% }) %>
+  <% } %>
+</body>
+</html>
