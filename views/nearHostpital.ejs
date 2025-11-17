@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nearby Hospitals</title>
+  <style>
+    body{font-family:Arial;background:#f0f2f5;margin:0;padding:20px}
+    .card{background:#fff;padding:15px;margin-bottom:10px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+    ul{padding-left:18px}
+  </style>
+</head>
+<body>
+  <h2>Nearby Hospitals & Doctors</h2>
+  <% if (!hospitals || hospitals.length === 0) { %>
+    <p>No hospitals added yet.</p>
+  <% } else { %>
+    <% hospitals.forEach(h => { %>
+      <div class="card">
+        <h3><%= h.name %></h3>
+        <p><strong>Location:</strong> <%= h.location %></p>
+        <p><strong>Contact:</strong> <%= h.contact || 'N/A' %></p>
+        <h4>Doctors</h4>
+        <% if (!h.doctors || h.doctors.length === 0) { %>
+          <p>No doctors listed.</p>
+        <% } else { %>
+          <ul>
+            <% h.doctors.forEach(d => { %>
+              <li>
+                <strong><%= d.name %></strong> - <%= d.specialization || 'General' %>
+                <% if (d.available) { %>
+                  <span style="color:green;">(Available)</span>
+                <% } else { %>
+                  <span style="color:red;">(Not Available)</span>
+                <% } %>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </div>
+    <% }) %>
+  <% } %>
+</body>
+</html>

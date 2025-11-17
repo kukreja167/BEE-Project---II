@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Available Doctors</title>
+  <style>
+    body{font-family:Arial;background:#f0f2f5;margin:0;padding:20px}
+    .card{background:#fff;padding:15px;margin-bottom:10px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+    a.btn{display:inline-block;margin-top:8px;padding:6px 12px;border-radius:6px;background:#0077b6;color:#fff;text-decoration:none;font-size:14px}
+  </style>
+</head>
+<body>
+  <h2>Available Doctors</h2>
+  <% if (!doctors || doctors.length === 0) { %>
+    <p>No doctors found.</p>
+  <% } else { %>
+    <% doctors.forEach(d => { %>
+      <div class="card">
+        <h3><%= d.name %></h3>
+        <p>Email: <%= d.email %></p>
+        <% if (d.specialization) { %><p>Specialization: <%= d.specialization %></p><% } %>
+        <a class="btn" href="/appointments/book/<%= d._id %>">Book Appointment</a>
+      </div>
+    <% }) %>
+  <% } %>
+</body>
+</html>
