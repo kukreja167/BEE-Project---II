@@ -1,11 +1,11 @@
-// models/Appointment.js
+
 const mongoose = require('mongoose');
 
 const appointmentSchema = new mongoose.Schema(
   {
     patientId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',   // because you have only user.js model
+      ref: 'User',  
       required: true,
     },
     doctorId: {
@@ -19,7 +19,7 @@ const appointmentSchema = new mongoose.Schema(
     },
     timeSlot: {
       type: String,
-      required: true, // example: "10:00 AM - 10:30 AM"
+      required: true, 
     },
     status: {
       type: String,

@@ -3,27 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <title>Book Appointment</title>
-  <link rel="stylesheet" href="/css/style.css" />
+   <style>
+    body{font-family:Arial;background:#f0f2f5;margin:0;display:flex;justify-content:center;align-items:center;height:100vh}
+    .card{background:#fff;padding:25px;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);width:360px}
+    label{display:block;margin-top:10px;font-weight:bold}
+    input,select,textarea{width:100%;padding:8px;margin-top:5px;border-radius:6px;border:1px solid #ccc}
+    button{margin-top:20px;width:100%;padding:10px;border:none;border-radius:6px;background:#0077b6;color:#fff;font-size:15px;cursor:pointer}
+  </style>
 </head>
 <body>
-  <h2>Book Appointment with Dr. <%= doctor.name %></h2>
+  <div class="card">
+  <h2>Book with Dr. <%= doctor.name %></h2>
 
   <form action="/appointments/book" method="POST">
     <input type="hidden" name="doctorId" value="<%= doctor._id %>" />
 
-    <label for="date">Date:</label>
-    <input type="date" id="date" name="date" required />
-    <br />
+    <label>Date</label>
+      <input type="date" name="date" required>
 
-    <label for="timeSlot">Time Slot:</label>
-    <select id="timeSlot" name="timeSlot" required>
-      <% timeSlots.forEach(slot => { %>
-        <option value="<%= slot %>"><%= slot %></option>
-      <% }) %>
-    </select>
-    <br /><br />
+      <label>Time Slot</label>
+      <select name="timeSlot" required>
+        <% timeSlots.forEach(t => { %>
+          <option value="<%= t %>"><%= t %></option>
+        <% }) %>
+      </select>
+
+      <label>Reason</label>
+      <textarea name="reason" rows="3"></textarea>
 
     <button type="submit" class="btn btn-primary">Confirm Booking</button>
   </form>
+  </div>
 </body>
 </html>
