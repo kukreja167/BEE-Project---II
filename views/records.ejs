@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Prescriptions</title>
+  <style>
+    body{font-family:Arial;background:#f0f2f5;margin:0;padding:20px}
+    .card{background:#fff;padding:15px;margin-bottom:10px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+    a.btn{display:inline-block;margin-top:8px;padding:6px 12px;border-radius:6px;background:#0077b6;color:#fff;text-decoration:none;font-size:13px}
+  </style>
+</head>
+<body>
+  <h2>My Prescriptions / Reports</h2>
+  <% if (!prescriptions || prescriptions.length === 0) { %>
+    <p>No prescriptions available.</p>
+  <% } else { %>
+    <% prescriptions.forEach(p => { %>
+      <div class="card">
+        <p><strong>Doctor:</strong> <%= p.doctorId ? p.doctorId.name : 'N/A' %></p>
+        <p><strong>Date:</strong> <%= new Date(p.date).toDateString() %></p>
+        <p><strong>Diagnosis:</strong> <%= p.diagnosis %></p>
+        <p><strong>Medicines:</strong></p>
+        <ul>
+          <% p.medicines.forEach(m => { %>
+            <li><%= m.name %> - <%= m.dosage %> <%= m.frequency %> for <%= m.duration %></li>
+          <% }) %>
+        </ul>
+        <a class="btn" href="/reports/download/<%= p._id %>">Download PDF</a>
+      </div>
+    <% }) %>
+  <% } %>
+</body>
+</html>

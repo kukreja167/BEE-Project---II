@@ -3,19 +3,88 @@
 <head>
   <meta charset="UTF-8" />
   <title>Login | HealthConnect</title>
+
   <link rel="stylesheet" href="/css/style.css" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 340px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #0077b6;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #005f92;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    a {
+      color: #0077b6;
+    }
+  </style>
 </head>
 <body>
-  <h2>Login</h2>
-  <form action="/auth/login" method="POST">
-    <label>Email</label>
-    <input type="email" name="email" required />
+  <div class="card">
+    <h2>Login</h2>
+    <form action="/auth/login" method="POST">
+      <label>Email</label>
+      <input type="email" name="email" required />
 
-    <label>Password</label>
-    <input type="password" name="password" required />
+      <label>Password</label>
+      <input type="password" name="password" required />
 
-    <button type="submit">Login</button>
-    <p>New here? <a href="/auth/register">Create account</a></p>
-  </form>
+      <button type="submit">Login</button>
+      <p>New here? <a href="/auth/register">Create account</a></p>
+    </form>
+  </div>
 </body>
 </html>

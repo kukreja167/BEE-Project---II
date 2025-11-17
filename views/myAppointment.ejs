@@ -4,10 +4,29 @@
   <meta charset="UTF-8" />
   <title>My Appointments</title>
   <style>
-    body{font-family:Arial;background:#f0f2f5;margin:0;padding:20px}
-    table{width:100%;border-collapse:collapse;background:#fff}
-    th,td{padding:10px;border:1px solid #ddd;font-size:14px}
-    th{background:#0077b6;color:#fff}
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    th {
+      background: #0077b6;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -16,7 +35,7 @@
   <% if (!appointments || appointments.length === 0) { %>
     <p>You have not booked any appointments yet.</p>
   <% } else { %>
-    <table border="1" cellpadding="8" cellspacing="0">
+    <table>
       <thead>
         <tr>
           <th>Doctor</th>
@@ -30,8 +49,11 @@
         <% appointments.forEach(a => { %>
           <tr>
             <td><%= a.doctorId ? a.doctorId.name : 'N/A' %></td>
-             <td><%= a.doctorId && a.doctorId.specialization ? a.doctorId.specialization : '' %></td>
+
+            <td><%= a.doctorId && a.doctorId.specialization ? a.doctorId.specialization : '' %></td>
+
             <td><%= a.date ? a.date.toDateString() : '' %></td>
+
             <td><%= a.timeSlot %></td>
             <td><%= a.status %></td>
           </tr>
