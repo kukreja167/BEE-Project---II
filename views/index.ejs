@@ -81,6 +81,7 @@
       margin-bottom: 2rem;
       animation: fadeIn 1.5s ease;
     }
+<<<<<<< HEAD
 
     .buttons a {
       display: inline-block;
@@ -105,6 +106,54 @@
       background-color: #0077b6;
       color: white;
       font-size: 0.9rem;
+=======
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="formTitle">Login</h2>
+
+    <!-- Login Form -->
+    <form id="loginForm">
+      <label>Email:</label>
+      <input type="email" name="email" required>
+      <label>Password:</label>
+      <input type="password" name="password" required>
+      <button type="submit">Login</button>
+      <span class="toggle-link" onclick="showRegister()">Don't have an account? Register</span>
+    </form>
+
+    <!-- Register Form -->
+    <form id="registerForm">
+      <label>Name:</label>
+      <input type="text" name="name" required>
+      <label>Email:</label>
+      <input type="email" name="email" required>
+      <label>Password:</label>
+      <input type="password" name="password" required>
+      <label>Role:</label>
+      <select name="role">
+        <option value="patient">Patient</option>
+        <option value="doctor">Doctor</option>
+      </select>
+      <button type="submit">Register</button>
+      <span class="toggle-link" onclick="showLogin()">Already have an account? Login</span>
+    </form>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const formTitle = document.getElementById("formTitle");
+
+    // Default: Show login form
+    showLogin();
+
+    function showLogin() {
+      loginForm.style.display = "flex";
+      registerForm.style.display = "none";
+      formTitle.textContent = "Login";
+>>>>>>> d1324ca6ecaa93a5fcda205fe291c83889ee1faa
     }
 
     @keyframes fadeInDown {

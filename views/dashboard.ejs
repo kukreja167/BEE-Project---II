@@ -112,7 +112,7 @@
   <div class="container">
     <h1>Dashboard</h1>
 
-    <!-- Patient Section -->
+
     <div id="patient-section" style="display:none;">
       <h2>Book Appointment</h2>
       <form id="book-appointment-form">
@@ -125,7 +125,7 @@
       <ul id="appointments-list"></ul>
     </div>
 
-    <!-- Doctor Section -->
+
     <div id="doctor-section" style="display:none;">
       <h2>Manage Patient Records</h2>
       <form id="add-record-form">
@@ -152,7 +152,7 @@ if(!token || !userRole || !userId){
   window.location.href="/";
 }
 
-// Patient Dashboard
+
 if(userRole==='patient'){
   document.getElementById('patient-section').style.display='block';
   fetch(`/appointments/patient/${userId}`,{headers:{'Authorization':`Bearer ${token}`}})
@@ -174,11 +174,11 @@ if(userRole==='patient'){
   };
 }
 
-// Doctor Dashboard
+
 if(userRole==='doctor'){
   document.getElementById('doctor-section').style.display='block';
 
-  // Patient Records
+
   fetch(`/records/doctor/${userId}`,{headers:{'Authorization':`Bearer ${token}`}})
   .then(res=>res.json()).then(data=>{
     const list=document.getElementById('records-list');
@@ -217,7 +217,7 @@ if(userRole==='doctor'){
     .then(()=> location.reload());
   };
 
-  // Appointments
+
   fetch(`/appointments/doctor/${userId}`,{headers:{'Authorization':`Bearer ${token}`}})
   .then(res=>res.json()).then(data=>{
     const list=document.getElementById('appointments-list-doctor');
