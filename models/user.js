@@ -1,10 +1,20 @@
-const mongoose = require("mongoose");
+// models/user.js
+const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, enum: ["patient", "doctor"], required: true }
-});
+const userSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, unique: true, required: true },
+    password: { type: String, required: true },
+    role: { type: String, enum: ['doctor', 'patient', 'admin'], default: 'patient' },
 
-module.exports = mongoose.model("User", userSchema);
+    // add any other fields you already had:
+    age: Number,
+    gender: String,
+  },
+  { timestamps: true }
+);
+
+// ✅ Important: prevent OverwriteModelError
+module.exports =
+  mongoose.models.User || mongoose.model('User', userSchema);

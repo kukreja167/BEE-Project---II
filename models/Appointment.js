@@ -1,4 +1,4 @@
-// models/Appointment.js
+
 const mongoose = require("mongoose");
 
 const appointmentSchema = new mongoose.Schema(
@@ -34,4 +34,5 @@ const appointmentSchema = new mongoose.Schema(
 // Prevent double booking -> same doctor, same date, same timeSlot
 appointmentSchema.index({ doctor: 1, date: 1, timeSlot: 1 }, { unique: true });
 
-module.exports = mongoose.model("Appointment", appointmentSchema);
+
+module.exports = mongoose.model('Appointment', appointmentSchema);
