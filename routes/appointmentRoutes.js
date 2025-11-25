@@ -1,13 +1,13 @@
 // routes/appointmentRoutes.js
 const express = require('express');
 const router = express.Router();
-<<<<<<< HEAD
+
 const { protect } = require("../middleware/authMiddleware");
 const appointmentController = require("../controller/appointmentController");
-=======
+
 const appointmentController = require('../controller/appointmentController');
 const { protect } = require('../middleware/authMiddleware');
->>>>>>> master
+
 
 // All routes require login
 router.get('/available', protect, appointmentController.showAvailableDoctors);

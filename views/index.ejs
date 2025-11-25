@@ -81,7 +81,7 @@
       margin-bottom: 2rem;
       animation: fadeIn 1.5s ease;
     }
-<<<<<<< HEAD
+
 
     .buttons a {
       display: inline-block;
@@ -106,7 +106,7 @@
       background-color: #0077b6;
       color: white;
       font-size: 0.9rem;
-=======
+    }
   </style>
 </head>
 <body>
@@ -153,57 +153,5 @@
       loginForm.style.display = "flex";
       registerForm.style.display = "none";
       formTitle.textContent = "Login";
->>>>>>> d1324ca6ecaa93a5fcda205fe291c83889ee1faa
+
     }
-
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>HealthConnect</h1>
-    <nav>
-      <a href="/auth/login">Login</a>
-      <a href="/auth/register">Sign Up</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <div class="hero-content">
-      <h2>Your Health, Our Priority</h2>
-      <p>
-        Book appointments, download reports and connect with nearby doctors in
-        just a few clicks.
-      </p>
-
-      <div class="buttons">
-        <a href="/auth/login">Login</a>
-        <a href="/auth/register">Sign Up</a>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    &copy; <%= new Date().getFullYear() %> HealthConnect | Built for Smart
-    Healthcare
-  </footer>
-</body>
-</html>
