@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
-// controller/authController.js
->>>>>>> master
+
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
@@ -10,17 +7,19 @@ const createToken = (id) =>
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
-    const user = new User({ name, email, password, role });
+    const { name, email, password, role, specialization } = req.body;
+    if (!name || !email || !password || !role)
+      return res.status(400).send("Missing fields");
+
+    const existing = await User.findOne({ email });
+    if (existing) return res.status(400).send("User already exists");
+
+    const user = new User({ name, email, password, role, specialization });
     await user.save();
     return res.redirect("/auth/login");
   } catch (err) {
-<<<<<<< HEAD:controller/authController.js
-    console.error("Register error:", err);
-    res.status(500).send("Error registering user");
-=======
-    res.status(500).json({ error: err.message });
->>>>>>> d1324ca6ecaa93a5fcda205fe291c83889ee1faa:controllers/authController.js
+    console.error("register:", err);
+    return res.status(500).send("Server error");
   }
 };
 
@@ -29,7 +28,7 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
-    if (!user || user.password !== password) {
+    if (!user || !(await user.matchPassword(password))) {
       return res.status(401).send("Invalid credentials");
     }
 
@@ -37,11 +36,11 @@ exports.login = async (req, res) => {
     res.cookie("token", token, { httpOnly: true });
     return res.redirect("/dashboard");
   } catch (err) {
-<<<<<<< HEAD:controller/authController.js
+
     console.error("Login error:", err);
     res.status(500).send("Error logging in");
-=======
+
     res.status(500).json({ error: err.message });
->>>>>>> d1324ca6ecaa93a5fcda205fe291c83889ee1faa:controllers/authController.js
+
   }
 };

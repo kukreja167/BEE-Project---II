@@ -1,125 +1,83 @@
 const Appointment = require("../models/Appointment");
 const redis = require("../config/redis");
+const { Publisher } = require("../shared/redis.js");
 
 
-const getCacheKey = (type, id) => `${type}_appointments_${id}`;
 
+
+exports.showAvailableDoctors = async (req, res) => {
+  const doctors = await User.find({ role: "doctor" }).lean();
+  res.render("availableDoctors", { doctors, user: req.user });
+};
+
+exports.bookDoctorPage = async (req, res) => {
+  const doctor = await User.findById(req.params.doctorId).lean();
+  if (!doctor) return res.status(404).send("Doctor not found");
+  const timeSlots = ["09:00 AM", "10:00 AM", "11:30 AM", "02:00 PM", "04:00 PM"];
+  res.render("bookAppointment", { doctor, timeSlots, user: req.user });
+};
 
 exports.bookAppointment = async (req, res) => {
-  try {
-    const { patient, doctor, date, reason } = req.body;
+   try {
+    const { doctorId, date, timeSlot, reason } = req.body;
+    const appt = new Appointment({
+      patientId: req.user._id,
+      doctorId,
+      date,
+      timeSlot,
+      reason
+    });
+    await appt.save();
 
-    if (!patient || !doctor || !date || !reason) {
-      return res.status(400).json({ error: "All fields are required" });
-    }
-
-
-    const exists = await Appointment.findOne({ doctor, date });
-    if (exists) {
-      return res.status(409).json({ error: "Slot already booked" });
-    }
-
-    const appointment = new Appointment({ patient, doctor, date, reason });
-    await appointment.save();
-
-    await redis.del(getCacheKey("patient", patient));
-    await redis.del(getCacheKey("doctor", doctor));
-
-    res.json({ success: true, appointment });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-exports.getPatientAppointments = async (req, res) => {
-  try {
-    const patientId = req.params.id;
-
-    const cacheKey = getCacheKey("patient", patientId);
-    const cached = await redis.get(cacheKey);
-
-    if (cached) {
-      return res.json(JSON.parse(cached));
-    }
-
-    const appointments = await Appointment.find({ patient: patientId })
-      .populate("doctor", "name email")
-      .sort({ date: -1 });
-
-
-    await redis.setEx(cacheKey, 300, JSON.stringify(appointments));
-
-    res.json(appointments);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-
-exports.getDoctorAppointments = async (req, res) => {
-  try {
-    const doctorId = req.params.id;
-    const cacheKey = getCacheKey("doctor", doctorId);
-
-    const cached = await redis.get(cacheKey);
-
-    if (cached) {
-      return res.json(JSON.parse(cached));
-    }
-
-    const appointments = await Appointment.find({ doctor: doctorId })
-      .populate("patient", "name email")
-      .sort({ date: -1 });
-
-    await redis.setEx(cacheKey, 300, JSON.stringify(appointments));
-
-    res.json(appointments);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-
-exports.confirmAppointment = async (req, res) => {
-  try {
-    const appointment = await Appointment.findByIdAndUpdate(
-      req.params.id,
-      { status: "confirmed" },
-      { new: true }
+    await Publisher.publish(
+      "appointment:new",
+      JSON.stringify({
+        id: appt._id,
+        doctorId,
+        patientId: req.user._id,
+        date,
+        timeSlot
+      })
     );
 
-    if (!appointment) {
-      return res.status(404).json({ error: "Appointment not found" });
-    }
-
-    // Invalidate related caches
-    await redis.del(getCacheKey("patient", appointment.patient));
-    await redis.del(getCacheKey("doctor", appointment.doctor));
-
-    res.json({ success: true, appointment });
+    res.redirect("/appointments/my");
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).send("Server error");
   }
 };
 
-exports.cancelAppointment = async (req, res) => {
-  try {
-    const appointment = await Appointment.findByIdAndUpdate(
-      req.params.id,
-      { status: "cancelled" },
-      { new: true }
-    );
 
-    if (!appointment) {
-      return res.status(404).json({ error: "Appointment not found" });
-    }
 
-    // Invalidate cache
-    await redis.del(getCacheKey("patient", appointment.patient));
-    await redis.del(getCacheKey("doctor", appointment.doctor));
-
-    res.json({ success: true, appointment });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+exports.myAppointments = async (req, res) => {
+  const appointments = await Appointment.find({ patientId: req.user._id })
+    .populate("doctorId", "name specialization")
+    .sort({ date: 1 })
+    .lean();
+  res.render("myAppointments", { appointments, user: req.user });
 };
+
+exports.doctorAppointments = async (req, res) => {
+  const appointments = await Appointment.find({ doctorId: req.user._id })
+    .populate("patientId", "name email")
+    .sort({ date: 1 })
+    .lean();
+  res.render("doctorAppointments", { appointments, user: req.user });
+};
+
+exports.updateStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  await Appointment.findByIdAndUpdate(id, { status });
+
+  await Publisher.publish(
+    "appointment:status",
+    JSON.stringify({
+      id,
+      status
+    })
+  );
+
+  res.redirect("/appointments/doctor");
+};
+
