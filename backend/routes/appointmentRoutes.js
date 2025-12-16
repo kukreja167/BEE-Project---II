@@ -3,10 +3,8 @@ const express = require('express');
 const router = express.Router();
 
 const { protect } = require("../middleware/authMiddleware");
-const appointmentController = require("../controller/appointmentController");
+const appointmentController = require("../controllers/appointmentController");
 
-const appointmentController = require('../controller/appointmentController');
-const { protect } = require('../middleware/authMiddleware');
 
 
 // All routes require login

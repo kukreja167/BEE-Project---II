@@ -1,5 +1,5 @@
 const Appointment = require("../models/Appointment");
-const redis = require("../config/redis");
+const redis = require("../shared/redis.js");
 const { Publisher } = require("../shared/redis.js");
 
 
