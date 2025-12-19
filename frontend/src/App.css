@@ -1,0 +1,243 @@
+:root {
+  --primary-color: #0077b6;
+  --secondary-color: #f0f2f5;
+  --text-color: #333;
+  --background-color: #fff;
+  --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  --border-radius: 10px;
+  --font-family: 'Arial', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.home-container {
+  height: 100%;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+
+.navbar .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.nav-links li a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.home-main {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: var(--background-color);
+  margin: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  flex: 1;
+}
+
+.home-main h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.home-main p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.home-main a {
+  display: inline-block;
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  background-color: var(--primary-color);
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  margin: 0 1rem;
+  transition: background-color 0.3s;
+}
+
+.home-main a:hover {
+  background-color: #005a8a;
+}
+
+.features {
+  display: flex;
+  justify-content: space-around;
+  margin: 2rem 0;
+  padding: 0 2rem;
+}
+
+.feature-card {
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  width: 30%;
+  transition: transform 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-card h3 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+.footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  margin-top: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .nav-links {
+    margin-top: 1rem;
+  }
+
+  .home-main {
+    padding: 2rem 1rem;
+    margin: 1rem;
+  }
+
+  .home-main h1 {
+    font-size: 2rem;
+  }
+
+  .home-main p {
+    font-size: 1rem;
+  }
+
+  .home-main a {
+    display: block;
+    margin: 1rem 0;
+  }
+
+  .features {
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1rem;
+  }
+
+  .feature-card {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar .logo {
+    font-size: 1.2rem;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .home-main h1 {
+    font-size: 1.8rem;
+  }
+
+  .home-main a {
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+  }
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+  font-family: var(--font-family);
+  background-color: var(--secondary-color);
+  margin: 0;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.logout-btn {
+  margin-left: 1rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.dashboard-content {
+  max-width: 900px;
+  margin: 30px auto;
+  background-color: var(--background-color);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.action-list {
+  list-style: none;
+  padding: 0;
+}
+
+.action-list li {
+  margin: 8px 0;
+}
+
+.action-list a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.action-list a:hover {
+  text-decoration: underline;
+}

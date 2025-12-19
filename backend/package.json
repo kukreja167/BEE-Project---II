@@ -1,0 +1,31 @@
+{
+  "name": "bee-project---ii",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kukreja167/BEE-Project---II.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kukreja167/BEE-Project---II/issues"
+  },
+  "homepage": "https://github.com/kukreja167/BEE-Project---II#readme",
+  "description": "",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+
+    "mongoose": "^8.18.2",
+
+    "pdfkit": "^0.17.2",
+    "redis": "^5.9.0",
+    "ws": "^8.18.3"
+  }
+}
